@@ -2,20 +2,20 @@
 <manifest>
 
   <remote  name="vulkan-github"
-           fetch="https://github.com/GPUOpen-Drivers" />
+           fetch="." />
 
   <default revision="master"
            remote="vulkan-github"
            sync-j="8"
-           sync-c="true" />
+           sync-c="true"
+           sync-s="true" />
 
-  <project path="drivers/xgl" name="xgl" revision="88a4f8c5657824f93790eefe3c9e078806c2a768"/>
-  <project path="drivers/pal" name="pal" revision="57cd977c79e4321c28dcb1a18a4aa23880aa48f4"/>
-  <project path="drivers/llpc" name="llpc" revision="86ed348f405120042a2540ec3157e28baf45dc81"/>
-  <project path="drivers/spvgen" name="spvgen" revision="6b84106b7e107173428647850b4ba93a75b23d84"/>
-  <project path="drivers/AMDVLK" name="AMDVLK" revision="e77387bc4409e53fa05ce69d3b17659cf313488f"/>
-  <project path="drivers/llvm-project" name="llvm-project" revision="1551e626ea6b19f81928d2e4eddab657eb82af9b"/>
-  <project path="drivers/third_party/metrohash" name="MetroHash" revision="3c566dd9cda44ca7fd97659e0b53ac953f9037d2"/>
-  <project path="drivers/third_party/cwpack" name="CWPack" revision="7387247eb9889ddcabbc1053b9c2052e253b088e"/>
+  <project path="drivers/xgl" name="xgl" revision="e9782eb33ce5e5e4ed2e339542a28c1b933624b4"/>
+  <project path="drivers/pal" name="pal" revision="c5e800072a32f68b6ccc4422936d96167c6e0728"/>
+  <project path="drivers/llpc" name="llpc" revision="40cb8d95ad8d6f7f1652e3fd47d39667594cce08"/>
+  <project path="drivers/gpurt" name="gpurt" revision="7b226d48b46b7e92fec3b9ecc5712e5bf2bf3dd9"/>
+  <project path="drivers/llvm-project" name="llvm-project" revision="8fd93e26cf9b1235fc9573b68b96233818be0ed4"/>
+  <project path="drivers/third_party/metrohash" name="MetroHash" revision="6ab6ee5d31d001ba73feb5e7f13dbc75da96b620"/>
+  <project path="drivers/third_party/cwpack" name="CWPack" revision="73d612971b3a73341f241b021e5cbda220eef7f2"/>
 
 </manifest>

@@ -10,35 +10,32 @@ Shaders that compose a particular `VkPipeline` object are compiled as a single e
 ### Product Support
 The AMD Open Source Driver for Vulkan is designed to support the following AMD GPUs:
 
-* Radeon&trade; RX 6900/6800 Series
+* Radeon&trade; RX 9070 Series
+* Radeon&trade; RX 7900/7800/7700/7600 Series
+* Radeon&trade; RX 6900/6800/6700/6600/6500 Series
 * Radeon&trade; RX 5700/5600/5500 Series
-* Radeon&trade; RX Vega Series
-* Radeon&trade; R5/R7/R9 200/300 Series
-* Radeon&trade; RX 400/500 Series
-* Radeon&trade; M200/M300/M400 Series
-* Radeon&trade; HD 8000M Series
-* Radeon&trade; HD 7000 Series
-* AMD FirePro&trade; Workstation Wx000/Wx100/Wx300 Series
-* Radeon&trade; Pro WX x100 Series
-* Radeon&trade; Pro 400/500 Series
-* Radeon&trade; W5700/W5500 Series
+* Radeon&trade; Pro W5700/W5500 Series
+
+> **Note**
+> For Pre-GFX10 GPUs, please use v-2023.Q3.3 or older release.
 
 ### Operating System Support
-The AMD Open Source Driver for Vulkan is designed to support following distros on both the AMDGPU upstream driver stack and the [AMDGPU Pro driver stack](https://support.amd.com/en-us/kb-articles/Pages/Radeon-Software-for-Linux-Release-Notes.aspx):
-* Ubuntu 20.04 (64-bit version)
-* Ubuntu 18.04 (64-bit version)
-* RedHat 8.2 (64-bit version)
-* RedHat 7.8 (64-bit version)
+The AMD Open Source Driver for Vulkan is designed to support following distros and versions on both the AMDGPU upstream driver stack and the [AMDGPU Pro driver stack](https://www.amd.com/en/support/linux-drivers):
+* Ubuntu 22.04 (amd64 version)
+* Ubuntu 24.04 (amd64 version)
+* RedHat 9.0 (x86-64 version)
+* RedHat 10.0 (x86-64 version)
 
-The driver has not been tested on other distros. You may try it out on other distros of your choice.
+The driver has not been well tested on other distros and versions. You may try it out on other distros and versions of your choice.
 
-> **Note:** To run the Vulkan driver with AMDGPU upstream driver stack on SI and CI generation GPUs, amdgpu.si_support and amdgpu.cik_support need to be enabled in kernel
+> **Note**
+> To run the Vulkan driver with AMDGPU upstream driver stack on SI and CI generation GPUs, amdgpu.si_support and amdgpu.cik_support need to be enabled in kernel
 
 ### Feature Support and Performance
 The AMD Open Source Driver for Vulkan is designed to support the following features:
 
-* Vulkan 1.2
-* More than 30 extensions
+* Vulkan 1.4
+* More than 180 extensions
 * [Radeon&trade; GPUProfiler](https://github.com/GPUOpen-Tools/Radeon-GPUProfiler) tracing
 * Built-in debug and profiling tools
 * Mid-command buffer preemption and SR-IOV virtualization
@@ -51,43 +48,44 @@ The following features and improvements are planned in future releases (Please r
 
 
 ### Known Issues
-* CTS may hang in VK.synchronization.internally_synchronized_objects.pipeline_cache_compute with Linux kernel versions lower than 4.13
-* The driver can only work with firmware of ME feature version >= 25 (you can check the version with command "sudo cat /sys/kernel/debug/dri/0/amdgpu_firmware_info"). If you are using upstream stack with GPUs of SI or CI family, you may need to upgrade the kernel to 4.19 or later version and firmware (under /lib/firmware/amdgpu/) to the right version from https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/amdgpu, and then update ramfs (sudo mkinitramfs -o /boot/initrd.img-\`uname -r\` \`uname -r\`)
+* If you are using upstream stack, you may need to upgrade the kernel to 5.3 or later version and firmware (under /lib/firmware/amdgpu/) to the right version from https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/amdgpu, and then update ramfs (sudo update-initramfs -u -k \`uname -r\`)
 * Timeline semaphore is not fully supported in Linux kernel until version 5.5. You can install [Vulkan timeline semaphore layer](https://github.com/KhronosGroup/Vulkan-ExtensionLayer) to enable the extension if you are using earlier version of Linux kernel
 
 
 ### How to Contribute
 You are welcome to submit contributions of code to the AMD Open Source Driver for Vulkan.
 
-The driver is built from source code in four repositories: [LLVM](https://github.com/GPUOpen-Drivers/llvm-project), [XGL](https://github.com/GPUOpen-Drivers/xgl), [LLPC](https://github.com/GPUOpen-Drivers/llpc) and [PAL](https://github.com/GPUOpen-Drivers/pal).
+The driver is built from source code in five repositories: [LLVM](https://github.com/GPUOpen-Drivers/llvm-project), [XGL](https://github.com/GPUOpen-Drivers/xgl), [LLPC](https://github.com/GPUOpen-Drivers/llpc), [GPURT](https://github.com/GPUOpen-Drivers/gpurt) and [PAL](https://github.com/GPUOpen-Drivers/pal).
 
 For changes to LLVM, you should submit contribution to the [LLVM trunk](https://reviews.llvm.org/). Commits there will be evaluated to merge into the amd-gfx-gpuopen-master branch periodically.
 
-For changes to XGL, LLPC and PAL, please [create a pull request](https://help.github.com/articles/creating-a-pull-request/) against the dev branch. After your change is reviewed and if it is accepted, it will be evaluated to merge into the master branch in a subsequent regular promotion.
+For changes to XGL, LLPC, GPURT and PAL, please [create a pull request](https://help.github.com/articles/creating-a-pull-request/) against the **dev branch**. After your change is reviewed and if it is accepted, it will be evaluated to merge into the master branch in a subsequent regular promotion.
 
 **IMPORTANT**: By creating a pull request, you agree to allow your contribution to be licensed by the project owners under the terms of the [MIT License](LICENSE.txt).
 
-When contributing to XGL, LLPC and PAL, your code should:
+When contributing to XGL, LLPC, GPURT and PAL, your code should:
 * Match the style of nearby existing code. Your code may be edited to comply with our coding standards when it is merged into the master branch.
 * Avoid adding new dependencies, including dependencies on STL.
 
 Please make each contribution reasonably small. If you would like to make a big contribution, like a new feature or extension, please raise an issue first to allow planning to evaluate and review your work.
 
-> **Note:** Since PAL is a shared component that must support other APIs, other operating systems, and pre-production hardware, you might be asked to revise your PAL change for reasons that may not be obvious from a pure Linux Vulkan driver perspective.
+> **Note**
+> Since PAL is a shared component that must support other APIs, other operating systems, and pre-production hardware, you might be asked to revise your PAL change for reasons that may not be obvious from a pure Linux Vulkan driver perspective.
 
 ## Build Instructions
 
 ### System Requirements
-It is recommended to install 16GB RAM in your build system.
+It is recommended to install at least 16GB RAM in your build system.
 
 ### Build System
-* CMake 3.13.4 or newer is required. [Download](https://cmake.org/download/) and install proper one if the cmake is older than 3.13.4.
-* Ninja is requred.
+* CMake 3.21 or newer is required. [Download](https://cmake.org/download/) and install proper one if the cmake is older than 3.21.
+* C++ 20 support is required. Like gcc9, clang11.
+* Ninja is required.
 
 ### Install Dev and Tools Packages
 #### Ubuntu
 ```
-sudo apt-get install build-essential curl g++-multilib gcc-multilib git pkg-config python3
+sudo apt-get install build-essential cmake curl g++-multilib gcc-multilib git ninja-build pkg-config python3 python3-jinja2 python3-ruamel.yaml
 ```
 ##### 64-bit
 ```
@@ -99,33 +97,65 @@ dpkg --add-architecture i386
 sudo apt-get install libssl-dev:i386 libx11-dev:i386 libxcb1-dev:i386 libxcb-dri3-dev:i386 libxcb-dri2-0-dev:i386 libxcb-present-dev:i386 libxshmfence-dev:i386 libwayland-dev libwayland-dev:i386 libxrandr-dev:i386
 ```
 #### RedHat
-```
-wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
-sudo yum localinstall epel-release-latest-7.noarch.rpm
-
-sudo yum update
-```
 ##### 64-bit
 ```
-sudo yum -y install openssl-devel gcc-c++ python3 curl glibc-devel libstdc++-devel libxcb-devel libX11-devel libxshmfence-devel libXrandr-devel wayland-devel
+sudo yum -y install openssl-devel gcc-c++ python3 python3-pip curl glibc-devel libstdc++-devel libxcb-devel libX11-devel libxshmfence-devel libXrandr-devel wayland-devel
+pip3 install jinja2 ruamel.yaml 
 ```
 ##### 32-bit
 ```
-sudo yum -y install openssl-devel.i686 gcc-c++ python3 curl glibc-devel.i686 libstdc++-devel.i686 libxcb-devel.i686 libX11-devel.i686 libxshmfence-devel.i686 libXrandr-devel.i686 wayland-devel.i686
+sudo yum -y install openssl-devel.i686 gcc-c++ python3 python3-pip curl glibc-devel.i686 libstdc++-devel.i686 libxcb-devel.i686 libX11-devel.i686 libxshmfence-devel.i686 libXrandr-devel.i686 wayland-devel.i686
+pip3 install jinja2 ruamel.yaml 
+```
+
+### Install shader compiler tools
+Shader compiler tools such as [DirectXShaderCompiler](https://github.com/microsoft/DirectXShaderCompiler) and [glslang](https://github.com/KhronosGroup/glslang) need to be installed to build raytracing support.
+
+#### Ubuntu 22.04
+It is recommended to install them from [VulkanSDK](https://packages.lunarg.com/) 1.3.290 or higher.
+
+Ubuntu 22.04 (Jammy)
+```
+wget -qO- https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo tee /etc/apt/trusted.gpg.d/lunarg.asc
+sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-1.3.290-jammy.list https://packages.lunarg.com/vulkan/1.3.290/lunarg-vulkan-1.3.290-jammy.list
+sudo apt update
+sudo apt install vulkan-sdk
+```
+#### Others
+Get [DirectXShaderCompiler](https://github.com/microsoft/DirectXShaderCompiler) and [glslang](https://github.com/KhronosGroup/glslang) source code and build tools on local.
+```
+#!/bin/bash
+
+if [ ! -d DirectXShaderCompiler ]; then
+git clone --depth=1 -b release-1.8.2403 https://github.com/microsoft/DirectXShaderCompiler.git
+fi
+
+if [ ! -d glslang ]; then
+git clone --depth=1 -b vulkan-sdk-1.3.290.0 https://github.com/KhronosGroup/glslang.git
+fi
+
+cd DirectXShaderCompiler
+git submodule init
+git submodule update
+cmake -H. -Bbuilds -GNinja -DCMAKE_BUILD_TYPE=Release -C ./cmake/caches/PredefinedParams.cmake
+cmake --build builds
+cd ..
+
+cd glslang
+cmake -H. -Bbuilds -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX='builds/install'
+cd builds
+make -j8 install
+cd ../../
+```
+Set env PATH and LD_LIBRARY_PATH before amdvlk driver build.
+```
+export PATH=<DirectXShaderCompiler>/builds/bin:<glslang>/install/bin:$PATH
+export LD_LIBRARY_PATH=<DirectXShaderCompiler>/builds/lib:$LD_LIBRARY_PATH
 ```
 ### Get Repo Tools
-
-#### Ubuntu 18.04
-```
-sudo apt-get install repo
-```
-#### Ubuntu 20.04, RedHat 7.8, 8.2
 ```
 mkdir ~/bin
 curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-# Replacing python with python3 is only needed on Ubuntu 20.04 if the 'python' executable is not available
-sed -i s/python/python3/ ~/bin/repo
 chmod a+x ~/bin/repo
 export PATH=~/bin:"$PATH"
 ```
@@ -139,47 +169,44 @@ repo init -u https://github.com/GPUOpen-Drivers/AMDVLK.git -b master
 repo sync
 ```
 
-> **Note:** Source code in dev branch can be gotten by using "-b dev" in the "repo init" command
+> **Note**
+> Source code in dev branch can be gotten by using "-b dev" in the "repo init" command.
 
-### Build Driver (64-bit, Release)
+### Build Driver and Generate JSON Files
 ```
-cd <vulkandriver_path>/drivers/xgl
+cmake -G Ninja -S xgl -B builds/Release64
+cmake --build builds/Release64
 
-cmake -H. -G Ninja -Bbuilds/Release64
-
-cd builds/Release64
-
-ninja
+cmake -G Ninja -S xgl -B builds/Release32 -DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32
+cmake --build builds/Release32
 ```
-> **Note:**
-* For RedHat 7.x, please use cmake3(>= 3.13.4) instead of cmake.
-* For debug build, use `-DCMAKE_BUILD_TYPE=Debug -DLLVM_PARALLEL_LINK_JOBS=2` (Linking a debug build of llvm is very memory intensive, so we use only two parallel jobs).
-* For 32-bit build, use `-DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32`.
-* To enable Wayland support, use `-DBUILD_WAYLAND_SUPPORT=ON`.
+
+> **Note**
+> * For debug build, use `-DCMAKE_BUILD_TYPE=Debug -DLLVM_PARALLEL_LINK_JOBS=2` (Linking a debug build of llvm is very memory intensive, so we use only two parallel jobs).
+> * If you want to build tools (such as [amdllpc](https://github.com/GPUOpen-Drivers/llpc/blob/dev/llpc/docs/amdllpc.md)) together with driver, add `-m build_with_tools.xml` in repo init and add the build option `-DVKI_BUILD_TOOLS=ON`.
 
 ## Installation Instructions
 ### Install Vulkan SDK
 You can download and install the SDK package [here](https://vulkan.lunarg.com/sdk/home).
 
-### Copy Driver and JSON Files
+### Install dependencies
 #### Ubuntu
 ```
-sudo cp <vulkandriver_path>/drivers/xgl/builds/Release64/icd/amdvlk64.so /usr/lib/x86_64-linux-gnu/
-sudo cp <vulkandriver_path>/drivers/xgl/builds/Release/icd/amdvlk32.so /usr/lib/i386-linux-gnu/
-sudo cp <vulkandriver_path>/drivers/AMDVLK/json/Ubuntu/* /etc/vulkan/icd.d/
+sudo apt install libssl3
 ```
 #### RedHat
 ```
-sudo cp <vulkandriver_path>/drivers/xgl/builds/Release64/icd/amdvlk64.so /usr/lib64/
-sudo cp <vulkandriver_path>/drivers/xgl/builds/Release/icd/amdvlk32.so /usr/lib/
-sudo cp <vulkandriver_path>/drivers/AMDVLK/json/Redhat/* /etc/vulkan/icd.d/
+sudo yum install openssl-libs
 ```
-**NOTE:** To make AMDVLK driver work correctly on system with both AMDVLK and RADV installed, AMD switchable graphics layer needs to be enabled by:
+
+### Install Driver and JSON Files
 ```
-sudo ln -s /etc/vulkan/icd.d/amd_icd64.json etc/vulkan/implicit_layer.d/amd_icd64.json
-sudo ln -s /etc/vulkan/icd.d/amd_icd32.json etc/vulkan/implicit_layer.d/amd_icd32.json
+sudo cmake --install builds/Release64 --component icd
+sudo cmake --install builds/Release32 --component icd
 ```
-> By default, AMDVLK driver is enabled. You can switch the driver between AMDVLK and RADV by environment variable AMD_VULKAN_ICD = AMDVLK or RADV.
+> If you want to install driver to customized directory, you can add "-DCMAKE_INSTALL_PREFIX={installation directory}" in the cmake build command. JSON files will be installed to /etc/vulkan/icd.d while other files will be installed to the installation directory you specified.
+
+> If RADV is also installed in the system, AMDVLK driver will be enabled by default after installation. You can switch the driver between AMDVLK and RADV by environment variable AMD_VULKAN_ICD = AMDVLK or RADV.
 
 > **Note:** The remaining steps are only required when running the AMDGPU upstream driver stack.
 
@@ -208,33 +235,46 @@ CommandBufferCombineDePreambles,1
 ```
 
 ### Install with pre-built driver
-You could download and install pre-built package from https://github.com/GPUOpen-Drivers/AMDVLK/releases for each code promotion in master branch:
-#### Ubuntu 18.04, 20.04
+You could generate the installation package with below command while building driver:
+#### Ubuntu
 ```
-sudo dpkg -r amdvlk   /* If old version is installed on the machine, remove it first */
+cmake -G Ninja -S xgl -B builds/Release64 [-DPACKAGE_VERSION=package version]
+cmake --build builds/Release64 --target makePackage
+```
+#### RedHat
+```
+cmake -G Ninja -S xgl -B builds/Release64 [-DPACKAGE_VERSION=package version]
+cmake --build builds/Release64 --target makePackage
+```
+
+You could also download pre-built package from https://github.com/GPUOpen-Drivers/AMDVLK/releases for each code promotion in master branch.
+
+Below is the installation instruction:
+#### Ubuntu
+```
+sudo dpkg -r amdvlk  # If old version is installed on the machine, remove it first 
 sudo dpkg -i amdvlk_x.x.x_amd64.deb
 sudo apt-get -f install
 ```
-#### RedHat 7.8, 8.2
+#### RedHat
 ```
-sudo rpm -e amdvlk   /* If old version is installed on the machine, remove it first */
-sudo rpm -i amdvlk-x.x.x-el.x86_64.rpm
+sudo rpm -e amdvlk   # If old version is installed on the machine, remove it first 
+sudo rpm -i amdvlk-x.x.x.x86_64.rpm
 ```
 
 For Ubuntu, you could also install the latest driver build from https://repo.radeon.com:
 ```
 sudo wget -qO - http://repo.radeon.com/amdvlk/apt/debian/amdvlk.gpg.key | sudo apt-key add -
 sudo sh -c 'echo deb [arch=amd64,i386] http://repo.radeon.com/amdvlk/apt/debian/ bionic main > /etc/apt/sources.list.d/amdvlk.list'
-sudo apt-get remove amdvlk /* If old version is installed on the machine, remove it first */
+sudo apt-get remove amdvlk # If old version is installed on the machine, remove it first 
 sudo apt update
 sudo apt-get install amdvlk
 ```
 
 ## Runtime Settings
-The driver exposes many settings that can customize the driver's behavior and facilitate debugging. You can add/edit settings in amdPalSettings.cfg file under one of below paths, formatted with one `name,value` pair per line:
+The driver exposes many settings that can customize the driver's behavior and facilitate debugging. You can add/edit settings in amdVulkanSettings.cfg or amdPalSettings.cfg file under one of below paths, formatted with one `name,value` pair per line:
 * /etc/amd
-* $XDG_CONFIG_HOME
-* $HOME/.config
+* $AMD_CONFIG_DIR
 
 Some example settings are listed below:
 
@@ -248,10 +288,10 @@ Some example settings are listed below:
 
 *All* available settings can be determined by examining below source files that define them.
 
-* .../xgl/icd/settings/settings.cfg (API layer settings)
+* .../xgl/icd/settings/settings_xgl.json (API layer settings)
 * .../pal/src/core/settings_core.json (PAL hardware-independent settings)
-* .../pal/src/core/hw/gfxip/gfx6/settings_gfx6.json (PAL GFX6-8 settings)
 * .../pal/src/core/hw/gfxip/gfx9/settings_gfx9.json (PAL GFX9+ settings)
+* .../pal/src/core/hw/gfxip/gfx12/settings_gfx12.json (PAL GFX12 settings)
 
 Runtime settings are only read at device initialization, and cannot be changed without restarting the application. If running on a system with multiple GPUs, the same settings will apply to all of them.  Lines in the settings file that start with `;` will be treated as comments.
 
@@ -283,7 +323,7 @@ You can use the following [Runtime Settings](#runtime-settings) to generate .csv
 
 You can use the script [timingReport.py](https://github.com/GPUOpen-Drivers/pal/tree/master/tools/gpuProfilerTools/timingReport.py) to analyze the profiling log:
 ```
-python timeReport.py <profiling_log_subdirectory>
+python timingReport.py <profiling_log_subdirectory>
 ```
 
 ## Dump Pipelines and Shaders
@@ -319,7 +359,7 @@ The AMD Open Source Driver for Vulkan contains code written by third parties.
 * [LLVM](https://github.com/GPUOpen-Drivers/llvm-project) is distributed under the Apache License v2.0 with LLVM Exceptions. See LICENSE.TXT file in the top directory of the LLVM repository.
 * [MetroHash](https://github.com/GPUOpen-Drivers/MetroHash) is distributed under the terms of Apache License 2.0.  See LICENSE file in the top directory of the MetroHash repository.
 * [CWPack](https://github.com/GPUOpen-Drivers/CWPack) is distributed under the terms of MITLicense. See LICENSE file in the top directory of the CWPack repository.
-* Please see the README.md file in the [PAL](https://github.com/GPUOpen-Drivers/pal), [LLPC](https://github.com/GPUOpen-Drivers/llpc) and [XGL](https://github.com/GPUOpen-Drivers/xgl) repositories for information on third party software used by those libraries.
+* Please see the README.md file in the [PAL](https://github.com/GPUOpen-Drivers/pal), [LLPC](https://github.com/GPUOpen-Drivers/llpc), [GPURT](https://github.com/GPUOpen-Drivers/gpurt) and [XGL](https://github.com/GPUOpen-Drivers/xgl) repositories for information on third party software used by those libraries.
 
 
 #### DISCLAIMER
